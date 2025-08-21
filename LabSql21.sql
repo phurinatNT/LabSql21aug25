@@ -33,7 +33,20 @@ ON Shippers.ShipperID = Orders.ShipVia
 where orderID = 10275
 
 --ต้องการรหัสพนักงาน ชื่อพนักกงาน รหัสใบสั่งซืื้อที่เกี่ยวข้อง เรียงตามลำดับรหัสพนักงาน
-select 
+select e.EmployeeID,FirstName, OrderID
+from Employees as e JOIN Orders as o on e.EmployeeID = o.EmployeeID
+order by EmployeeID
 --ต้องการรหัสสินค้า เมือง และประเทศของบริษัทผู้จำหน่าย
+select ProductID, ProductName, City, Country
+from Products p JOIN Suppliers s on p.SupplierID = s.SupplierID
+
 --ต้องการชื่อบริษัทขนส่ง และจำนวนใบสั่งซื้อที่เกี่ยวข้อง
+select CompanyName, count(*)
+from Orders as o JOIN Shippers as s on o.ShipVia = s.ShipperID
+Group by CompanyName
+
 --ต้องการรหัสสินค้า ชื่อสินค้า และจำนวนทั้งหมดที่ขายได้
+select p.ProductID,p.ProductName,sum(Quantity) as จำนวนที่ขายได้ทั้งหมด
+from Products p JOIN [Order Details] od on p.ProductID = od.ProductID
+Group by p.ProductID,p.ProductName
+order by 1
