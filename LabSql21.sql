@@ -85,6 +85,7 @@ from Employees e join orders o on e.EmployeeID = o.EmployeeID
 				 join Products p on od.ProductID = p.ProductID
 where e.FirstName = 'Nancy' 
 order by ProductID
+
 --ต้องการชื่อบริษัทลูกค้า around the Horn ซื้อสินค้าที่มาจากประเทศอะไรบ้าง
 select distinct s.Country
 from Customers c join orders o on c.CustomerID = o.CustomerID
@@ -92,6 +93,7 @@ from Customers c join orders o on c.CustomerID = o.CustomerID
 				 join Products p on od.ProductID = p.ProductID
 				 join Suppliers s on s.SupplierID = p.SupplierID
 where c.CompanyName = 'Around the Horn'
+
 --บริษัทลูกค้าชื่อ Around the Horn ซื้อสินค้าอะไรบ้าง จำนวนเท่าใด
 select p.ProductID, p.ProductName, sum(Quantity) [sum of Quantity]
 from Customers c join orders o on c.CustomerID = o.CustomerID
@@ -101,3 +103,10 @@ where c.CompanyName = 'Around the Horn'
 Group by p.ProductID, p.ProductName
 order by 1
 
+--ต้องการหมายเลขใบสั่งซื้อ ชื่อพนักงาน และยอดขายในใบสั่งซื้อนั้น
+select o.OrderID, e.FirstName, 
+		sum((Od.Quantity * od.UnitPrice * (1-od.Discount))) as TotalCash 
+from Orders o join Employees e on o.EmployeeID = e.EmployeeID
+			  join [Order Details] od on o.OrderID = od.OrderID
+Group by o.OrderID, e.FirstName
+Order by OrderID
